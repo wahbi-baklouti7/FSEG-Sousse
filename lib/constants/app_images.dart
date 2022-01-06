@@ -6,4 +6,5 @@ class AppImages {
   static const String EXAMS="assets/images/exams.png";
   static const String ONINE_COURSE="assets/images/onlineCourse.png";
   static const String PDF_FILE="assets/images/pdfFile.png";
+  static const String GOOGLE_LOGO="assets/images/google-logo.png";
 }
