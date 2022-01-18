@@ -6,6 +6,8 @@ import 'package:fseg_sousse/viewModel/resetPasswordViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgetPasswordScreen extends StatefulWidget{
+  static const String id="Reset Password";
+
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override

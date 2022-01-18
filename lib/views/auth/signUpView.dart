@@ -5,12 +5,13 @@ import 'package:fseg_sousse/helpers/validatorHelper.dart';
 
 
 import 'package:fseg_sousse/viewModel/signUpViewModel.dart';
+import 'package:fseg_sousse/views/auth/signInView.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static const String id="sign-up-screen";
+  static const String id="Sign Up";
   
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -130,7 +131,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: GoogleFonts.roboto(wordSpacing: 2, fontSize: 14),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, SignInScreen.id);
+                      },
                       child: Text(
                         "Sign In",
                         style: GoogleFonts.roboto(

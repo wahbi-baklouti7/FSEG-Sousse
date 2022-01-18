@@ -11,6 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 
 class SignInScreen extends StatefulWidget {
+  static const String id = "Sign In";
+
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
@@ -72,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 4),
               TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordScreen()));
+                    Navigator.pushNamed(context, ForgetPasswordScreen.id);
                   },
                   child: Text("Forget Password?",
                       style: GoogleFonts.roboto(
@@ -88,8 +90,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                     SignInViewModel.signInWithEmail(
+                    SignInViewModel.signInWithEmail(context,
                         email: _email!, password: _password!);
+                    
                   }
                 },
               ),
@@ -105,10 +108,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
+                        Navigator.pushNamed(context, SignUpScreen.id);
                       },
                       child: Text(
                         "Sign Up",
