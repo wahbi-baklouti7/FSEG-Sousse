@@ -1,14 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:fseg_sousse/models/user.dart';
+import 'package:fseg_sousse/services/database/database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FireAuth {
-  //return current user
-  User? get getUser => FirebaseAuth.instance.currentUser;
 
-  // sing up with email and password
+  /// return current user
+  static User? get getUser => FirebaseAuth.instance.currentUser;
+
+
+  /// send email verification
+  static Future<void> sendEmailVerification() async {
+    FirebaseAuth _auth =  FirebaseAuth.instance;
+    try {
+      User? _user = _auth.currentUser;
+      await _user!.sendEmailVerification();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+    /// check if email is verified or not 
+  static Future<bool> checkEmailVerified() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.currentUser!.reload();
+    return _auth.currentUser!.emailVerified;
+  }
+
+
+  /// sing up with email and password
   static Future<String?> signUpWithEmail(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String fullName}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String? message;
     try {
@@ -17,7 +42,13 @@ class FireAuth {
 
       if (userCredential.user != null) {
         message = "success";
-        await userCredential.user!.sendEmailVerification();
+
+        OurDatabase().createUser(UserModel(
+            uid: userCredential.user!.uid,
+            fullName: fullName,
+            email: email,
+            contribution: 0,
+            accountCreated: Timestamp.now()));
       }
     } on FirebaseAuthException catch (error) {
       if (error.code == 'email-already-in-use') {
@@ -29,26 +60,19 @@ class FireAuth {
     return message;
   }
 
-  // sing in method with email and password
+
+  /// sing in method with email and password
   static Future<String?> signInWithEmail(
       {required String email, required String password}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String? message;
     User? user;
-    // print(" email verified: ${auth.currentUser!.emailVerified}");
+
     try {
       UserCredential? userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      print("check before reload: ${userCredential.user!.emailVerified}");
-      //  print("${auth.currentUser!.emailVerified}");
-      //  userCredential.user!.getIdToken(true);
 
       user = userCredential.user;
-      user!.reload();
-      print("check after reload: ${userCredential.user!.emailVerified}");
-      print("user: $user");
-
-      //  print("user1 : $user1");
 
       if (user != null) {
         if (user.emailVerified) {
@@ -71,13 +95,14 @@ class FireAuth {
     return message;
   }
 
-  // sign in method with google account
+
+  /// sign in method with google account
   static Future<String?> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String? message;
 
     await GoogleSignIn().disconnect();
-    
+
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     final GoogleSignInAuthentication? googleAuth =
@@ -91,6 +116,15 @@ class FireAuth {
           await auth.signInWithCredential(credential);
       if (userCredential.user != null) {
         message = "success";
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          // Creating user in firestore
+          OurDatabase().createUser(UserModel(
+              uid: userCredential.user!.uid,
+              fullName: userCredential.user!.displayName,
+              email: userCredential.user!.email,
+              contribution: 0,
+              accountCreated: Timestamp.now()));
+        }
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
@@ -104,7 +138,8 @@ class FireAuth {
     return message;
   }
 
-  // reset password with address email link
+
+  /// reset password with address email link
   static Future<String?> resetPassword({required String email}) async {
     String? message;
     try {
@@ -118,5 +153,16 @@ class FireAuth {
       message = error.toString();
     }
     return message;
+  }
+
+  static Future<void> signOut()async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    try {
+     await _auth.signOut();
+     
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

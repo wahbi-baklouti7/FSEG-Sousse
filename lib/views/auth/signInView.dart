@@ -3,7 +3,7 @@ import 'package:fseg_sousse/components/components.dart';
 import 'package:fseg_sousse/constants/app_images.dart';
 import 'package:fseg_sousse/helpers/validatorHelper.dart';
 
-import 'package:fseg_sousse/viewModel/signInViewModel.dart';
+import 'package:fseg_sousse/viewModel/auth/signInViewModel.dart';
 import 'package:fseg_sousse/views/auth/resetPasswordView.dart';
 import 'package:fseg_sousse/views/auth/signUpView.dart';
 
@@ -31,9 +31,9 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Form(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               Text("Sign In",
@@ -42,7 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: AppColors.SECONDERY_COLOR,
                       fontSize: 30,
                       fontWeight: FontWeight.bold)),
-              SizedBox(
+              const SizedBox(
                 height: 80,
               ),
               AppTextForm(
@@ -53,9 +53,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     ValidatorHelper.validateEmail(email: value!),
                 onSaved: (value) {
                   _email = value;
+                  return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               AppTextForm(
                 obscureText: true,
                 hintText: "Password",
@@ -69,9 +70,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
                 onSaved: (value) {
                   _password = value;
+                  return null;
                 },
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, ForgetPasswordScreen.id);
@@ -82,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ))),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               AppButton(
@@ -92,11 +94,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     _formKey.currentState!.save();
                     SignInViewModel.signInWithEmail(context,
                         email: _email!, password: _password!);
-                    
                   }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 0,
               ),
               Row(
@@ -119,14 +120,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       ))
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               OutlinedButton(
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(width: 10, color: Colors.red),
+                        side: const BorderSide(width: 10, color: Colors.red),
                       )),
                       backgroundColor: MaterialStateProperty.all(Colors.white)),
                   onPressed: () {
@@ -135,11 +136,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image(
+                      const Image(
                         image: AssetImage(AppImages.GOOGLE_LOGO),
                         height: 49,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       Text(

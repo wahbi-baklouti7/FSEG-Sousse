@@ -3,11 +3,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ShowToast {
   // show toast for successful operation
-  static void toastSuccess({required String content, Color? color}) {
+  static void toastSuccess({required String content}) {
     Fluttertoast.showToast(
       msg: content,
       gravity: ToastGravity.TOP,
-      backgroundColor: color,
+      backgroundColor: Colors.green,
       fontSize: 17,
       toastLength: Toast.LENGTH_LONG,
     );
