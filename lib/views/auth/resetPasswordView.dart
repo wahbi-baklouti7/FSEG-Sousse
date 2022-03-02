@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fseg_sousse/components/components.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 import 'package:fseg_sousse/helpers/validatorHelper.dart';
-import 'package:fseg_sousse/viewModel/resetPasswordViewModel.dart';
+import 'package:fseg_sousse/viewModel/auth/resetPasswordViewModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ForgetPasswordScreen extends StatefulWidget{
-  static const String id="Reset Password";
+class ForgetPasswordScreen extends StatefulWidget {
+  static const String id = "Reset Password";
 
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
@@ -16,7 +16,7 @@ class ForgetPasswordScreen extends StatefulWidget{
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   String? _email;
-  final _formKey=GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,29 +26,25 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           // backwardsCompatibility: true,
 
           backgroundColor: Colors.white,
-          leading: IconButton(onPressed: (){
-            Navigator.pop(context);
-          }, icon: Icon(Icons.arrow_back,color: Colors.black,)),
-          
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              )),
         ),
         body: Form(
           key: _formKey,
           child: Center(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 24),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
               // padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     BackButton(
-                  //       onPressed: () {},
-                  //     ),
-                  //   ],
-                  // ),
-                  SizedBox(
+                  const SizedBox(
                     height: 0,
                   ),
                   Text("Reset Password",
@@ -58,28 +54,30 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         fontWeight: FontWeight.bold,
                         color: AppColors.SECONDERY_COLOR,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   AppTextForm(
                       lableText: "Email Address",
                       hintText: "Enter Your Email Address",
                       onSaved: (value) {
-                        _email=value;
+                        _email = value;
+                        return null;
                       },
-                      validator: (value)=>ValidatorHelper.validateEmail(email: value!))
-                      ,
-                      
-                  SizedBox(
+                      validator: (value) =>
+                          ValidatorHelper.validateEmail(email: value!)),
+
+                  const SizedBox(
                     height: 30,
                   ),
-                  AppButton(textButton: "Send", onPressed: ()
-                   {
-                      if(_formKey.currentState!.validate()){
-                        _formKey.currentState!.save();
-                        ResetPasswordViewModel.resetPassword(email: _email!);
-                      }
-                  })
+                  AppButton(
+                      textButton: "Send",
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          ResetPasswordViewModel.resetPassword(email: _email!);
+                        }
+                      })
                 ],
               ),
             ),
