@@ -3,16 +3,15 @@ import 'package:fseg_sousse/components/components.dart';
 import 'package:fseg_sousse/components/toast.dart';
 import 'package:fseg_sousse/helpers/validatorHelper.dart';
 
-
-import 'package:fseg_sousse/viewModel/signUpViewModel.dart';
+import 'package:fseg_sousse/viewModel/auth/signUpViewModel.dart';
 import 'package:fseg_sousse/views/auth/signInView.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static const String id="Sign Up";
-  
+  static const String id = "Sign Up";
+
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -33,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Form(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Text("Sign Up",
@@ -54,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: AppColors.SECONDERY_COLOR,
                       fontSize: 30,
                       fontWeight: FontWeight.bold)),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               AppTextForm(
@@ -69,9 +68,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 onSaved: (value) {
                   _userName = value;
+                  return null;
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               AppTextForm(
                 hintText: "Enter Your Email Address",
                 lableText: "Email",
@@ -80,9 +80,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ValidatorHelper.validateEmail(email: value!),
                 onSaved: (value) {
                   _email = value;
+                  return null;
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               AppTextForm(
                 obscureText: true,
                 hintText: "Enter Your Password",
@@ -92,9 +93,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ValidatorHelper.validatePassword(password: value!),
                 onSaved: (value) {
                   _password = value;
+                  return null;
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               AppTextForm(
                 obscureText: true,
                 hintText: "Confirm Your Password",
@@ -104,9 +106,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ValidatorHelper.validatePassword(password: value!),
                 onSaved: (value) {
                   _confirmPassword = value;
+                  return null;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               AppButton(
@@ -115,8 +118,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       if (_password == _confirmPassword) {
-                        SignUpViewModel.signUpWithEmail(
-                            email: _email!, password: _password!);
+                        SignUpViewModel.signUpWithEmail(context,
+                            email: _email!,
+                            password: _password!,
+                            fullName: _userName!);
                       } else {
                         ShowToast.toastError(content: "Password not match");
                         // print("Password not match");
@@ -143,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ))
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
             ],
