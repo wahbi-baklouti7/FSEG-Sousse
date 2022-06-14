@@ -1,39 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 import 'package:fseg_sousse/constants/app_size.dart';
-import 'package:fseg_sousse/views/subjects/add_subject.dart';
+import 'package:fseg_sousse/locator.dart';
+import 'package:fseg_sousse/utilities/global_data.dart';
 import 'package:fseg_sousse/views/subjects/widgets/subject_local_widgets.dart';
 import 'package:fseg_sousse/widgets/app_drawer.dart';
 
 class SubjectScreen extends StatelessWidget {
   static const String id = "Subjects";
-  const SubjectScreen({Key? key}) : super(key: key);
 
+  
+   SubjectScreen({Key? key,}) : super(key: key);
+
+   final GlobalData _providerData = locator<GlobalData>();
   @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build subject view *********************************");
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AddSubject.id);
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                    size: 32,
-                  ))
-            ],
             leading: BackButton(
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            title: const Text("Subjects"),
+            title:  Text(_providerData.section!),
             bottom: const TabBar(
               tabs: [
                 Tab(
@@ -48,7 +40,7 @@ class SubjectScreen extends StatelessWidget {
             )),
         drawer: const AppDrawer(),
         body: Padding(
-          padding: AppSize.symetricPadding,
+          padding: AppSize.symmetricPadding,
           child: const TabBarView(
               children: [FirstSemesterList(), SecondeSemesterList()]),
         ),

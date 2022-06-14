@@ -24,14 +24,12 @@ class AppThemeUtils {
             fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: 2),
         centerTitle: true,
         elevation: 1,
+        
         backgroundColor: AppColors.primaryColor,
       ),
       colorScheme: ColorScheme.fromSwatch(
           // primarySwatch:,
           accentColor: AppColors.primaryColor),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: AppColors.secondaryColor,
-          foregroundColor: Colors.white),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(AppColors.secondaryColor),

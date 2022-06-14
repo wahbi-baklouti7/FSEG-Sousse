@@ -13,8 +13,6 @@ import 'package:fseg_sousse/views/files/add_file_view.dart';
 import 'package:fseg_sousse/views/files/files_view.dart';
 import 'package:fseg_sousse/views/lectures/lectures_screen.dart';
 import 'package:fseg_sousse/views/home/home_screen.dart';
-import 'package:fseg_sousse/views/openFile/pdf_file_screen.dart';
-import 'package:fseg_sousse/views/subjects/add_subject.dart';
 import 'package:fseg_sousse/views/subjects/subject_screen.dart';
 
 class RouteGenerator {
@@ -56,22 +54,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const BooksScreen());
 
       case SubjectScreen.id:
-        return MaterialPageRoute(builder: (_) => const SubjectScreen());
-      case AddSubject.id:
-        return MaterialPageRoute(builder: (_) => AddSubject());
+     
+        return MaterialPageRoute(builder: (_) =>   SubjectScreen(
+          
+        ));
 
       case FileScreen.id:
         return MaterialPageRoute(builder: (_) => const FileScreen());
 
       case AddFileScreen.id:
         return MaterialPageRoute(builder: (_) => const AddFileScreen());
-
-      case PdfFileScreen.id:
-        final args = settings.arguments;
-        return MaterialPageRoute(
-            builder: (_) => PdfFileScreen(
-                  selectedFile: args,
-                ));
 
       default:
         return _errorRoute();

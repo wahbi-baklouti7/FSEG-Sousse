@@ -27,11 +27,8 @@ class SelectedCard extends StatelessWidget {
               child: Image.asset(
                 selectedChoice.icon,
                 filterQuality: FilterQuality.high,
-
-                // height: 100,
-                // width:100
-                cacheHeight: 210,
-                cacheWidth: 210,
+                cacheHeight: 150,
+                cacheWidth: 150,
               ),
             ),
             const SizedBox(

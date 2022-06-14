@@ -39,13 +39,13 @@ class FilePickerWidget extends StatelessWidget {
                       height: 70,
                       child: Image.asset(
                         AppImages.addPdf,
-                        cacheWidth: 200,
-                        cacheHeight: 200,
+                        cacheWidth: 170,
+                        cacheHeight: 170,
                         filterQuality: FilterQuality.high,
                       ))
                   : SizedBox(
-                      width: 80,
-                      height: 80,
+                      width: 70,
+                      height: 70,
                       child: Image.asset(
                         AppImages.pdfFile,
                         cacheWidth: 210,
@@ -53,13 +53,15 @@ class FilePickerWidget extends StatelessWidget {
                         filterQuality: FilterQuality.high,
                       ))),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               child: fileName != null
                   ? Text(
                       fileName!,
                       overflow: TextOverflow.ellipsis,
                     )
                   : Text(selectedFileName ?? "Choose file",
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyText1)),
         ],
       ),

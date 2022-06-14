@@ -8,7 +8,7 @@ import 'package:fseg_sousse/viewModel/auth/verify_email_view_model.dart';
 import 'package:fseg_sousse/viewModel/file/add_file_view_model.dart';
 import 'package:fseg_sousse/viewModel/file/edit_file_view_model.dart';
 import 'package:fseg_sousse/viewModel/file/file_view_model.dart';
-import 'package:fseg_sousse/viewModel/subject/add_subject_view_model.dart';
+import 'package:fseg_sousse/viewModel/subject/subject_view_model.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
@@ -27,5 +27,5 @@ GetIt locator = GetIt.instance;
   locator.registerFactory(() => AddFileViewModel());
   locator.registerFactory(() => EditFileViewModel());
   locator.registerFactory(() => FileViewModel());
-  locator.registerFactory(() => AddSubjectViewModel());
+  locator.registerFactory(() => SubjectViewModel());
 }

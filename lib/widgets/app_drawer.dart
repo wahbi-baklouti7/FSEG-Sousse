@@ -22,11 +22,10 @@ class AppDrawer extends StatelessWidget {
                 AppImages.universityLogo,
                 width: 100,
                 height: 120,
-                cacheWidth: 900,
-                cacheHeight: 900,
+                cacheWidth: 250,
+                cacheHeight: 250,
               )
             ])),
-        // const Divider(height: 20, color: Colors.grey),
         const SizedBox(
           height: 8,
         ),
@@ -48,7 +47,6 @@ class AppDrawer extends StatelessWidget {
 
             Navigator.pushNamedAndRemoveUntil(
                 context, SignInScreen.id, (route) => false);
-            print("signout fuction in app drawe ***********");
           },
         ),
       ]),

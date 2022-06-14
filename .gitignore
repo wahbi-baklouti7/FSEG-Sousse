@@ -15,6 +15,13 @@
 *.iws
 .idea/
 
+# Android Studio generated files and folders
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+output.json
+
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -30,6 +37,7 @@
 .pub-cache/
 .pub/
 /build/
+.fvm/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -40,10 +48,27 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Keystore files
+*.jks
+*.keystore
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/key.properties
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
+**/android/key.properties
+**/android/app/upload-keystore.jks
 
-
+# Google Services (e.g. APIs or Firebase)
+google-services.json
 

@@ -5,12 +5,12 @@ class License {
 }
 
 final List<License> licenseList = [
-  License(name: '1 LSG'),
-  License(name: '1 LSE'),
-  License(name: '2 LSG'),
-  License(name: '2 LSC'),
-  License(name: '2 LSE'),
-  License(name: '3 MFBA'), 
+  License(name: '1 L.S.G'),
+  License(name: '1 L.S.E'),
+  License(name: '2 L.S.G'),
+  License(name: '2 L.S.C'),
+  License(name: '2 L.S.E'),
+  License(name: '3 Monnaie, Finance, Banque et Assurance'),
   License(name: '3 Analyse et Politique Economiques'),
   License(name: '3 Ingénierie Economique et Financière'),
   License(name: '3 Business Economics'),
@@ -20,14 +20,3 @@ final List<License> licenseList = [
   License(name: '3 Management'),
   License(name: '3 Marketing'),
 ];
-
-
-
-
-
-
-
-
-
-
-

@@ -30,11 +30,11 @@ class AppAlert {
     });
   }
 
-  static Future confirmationDialog(context,
+  static Future confirmationDialog(BuildContext context,
       {required VoidCallback onConfirm, required VoidCallback onCancel}) async {
     return await showDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -86,7 +86,6 @@ class AppAlert {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             content: SizedBox(
-                // decoration: BoxDecoration(borderRadius:BorderRadius.circular(5)),
                 height: 100,
                 child: (Column(
                     mainAxisAlignment: MainAxisAlignment.center,

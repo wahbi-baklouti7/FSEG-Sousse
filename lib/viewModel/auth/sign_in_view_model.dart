@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:fseg_sousse/services/auth/authentication.dart';
 import 'package:fseg_sousse/services/localStorage/local_storage.dart';
+import 'package:fseg_sousse/utilities/connectivity_utility.dart';
 import 'package:fseg_sousse/views/home/home_screen.dart';
 
 import 'package:fseg_sousse/locator.dart';
 import 'package:fseg_sousse/widgets/alert.dart';
-import 'package:fseg_sousse/widgets/custom_snakbar.dart';
-import 'package:fseg_sousse/widgets/toast.dart';
+import 'package:fseg_sousse/widgets/custom_snackbar.dart';
 
 class SignInViewModel extends ChangeNotifier {
   final FireAuth _fireAuth = locator<FireAuth>();
@@ -18,26 +18,30 @@ class SignInViewModel extends ChangeNotifier {
 
   Future<void> signInWithEmail(BuildContext context,
       {required String email, required String password}) async {
-    AppAlert.loadingIndicator(context);
-    String result =
-        await _fireAuth.signInWithEmail(email: email, password: password);
+    if (await ConnectivityUtility.checkInternet(context)) {
+      AppAlert.loadingIndicator(context);
+      String result =
+          await _fireAuth.signInWithEmail(email: email, password: password);
 
-    if (result == "success") {
-      LocalStorage.saveLogin(value: true);
-      Navigator.pop(context);
-      Navigator.pushNamedAndRemoveUntil(
-          context, HomeView.id, (Route<dynamic> route) => false);
-    } else {
-      Navigator.pop(context);
-      AppSnackBar.errorSnackBar(context, content: result);
+      if (result == "success") {
+        LocalStorage.saveUserId(id: _fireAuth.currentUser!.uid);
+        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeView.id, (Route<dynamic> route) => false);
+      } else {
+        Navigator.pop(context);
+        AppSnackBar.errorSnackBar(context, content: result);
+      }
     }
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
-    AppAlert.loadingIndicator(context);
+
+    if(await ConnectivityUtility.checkInternet(context)){
+      AppAlert.loadingIndicator(context);
     String result = await _fireAuth.signInWithGoogle();
     if (result == "success") {
-      LocalStorage.saveLogin(value: true);
+      LocalStorage.saveUserId(id: _fireAuth.currentUser!.uid);
       Navigator.pop(context);
       Navigator.pushReplacementNamed(
         context,
@@ -45,7 +49,8 @@ class SignInViewModel extends ChangeNotifier {
       );
     } else {
       Navigator.pop(context);
-      ShowToast.showToast(content: result);
+      AppSnackBar.errorSnackBar(context, content: result);
+    }
     }
   }
 
@@ -56,7 +61,6 @@ class SignInViewModel extends ChangeNotifier {
 
   Future<void> signOut(context) async {
     await _fireAuth.signOut();
-
-    LocalStorage.saveLogin(value: false);
+    LocalStorage.removeUserId();
   }
 }

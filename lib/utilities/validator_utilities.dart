@@ -1,5 +1,5 @@
 class ValidatorUtils {
-  static String? validateEmail({required String email}) {
+  static String? validateEmail({required String email,String? confirmEmail}) {
     String pattern =
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
@@ -7,7 +7,10 @@ class ValidatorUtils {
       return 'Enter a valid email address';
     } else if (email.isEmpty) {
       return "Email can't be empty";
-    } else {
+    } else if(confirmEmail!=null && confirmEmail!=email){
+      return "Confirm email does not match";
+    }
+    else {
       return null;
     }
   }
@@ -19,7 +22,7 @@ class ValidatorUtils {
     }
     if (confirmPassword != null) {
       if (confirmPassword != password) {
-        return "Password not match";
+        return "Confirm password does not match";
       }
     } else if (password.length < 6) {
       return 'Password must be more than 6 character';

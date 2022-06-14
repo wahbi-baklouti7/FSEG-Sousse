@@ -1,13 +1,16 @@
 import 'package:permission_handler/permission_handler.dart';
 
+
+
 class AppPermissionUtils {
   static Future checkStoragePermission(
       {required Function onPermissionGranted,
       required Function onPermissionDenied}) async {
+       
     var _storageStatus = await Permission.storage.request();
     switch (_storageStatus) {
       case PermissionStatus.granted:
-        onPermissionGranted();
+        await onPermissionGranted();
         break;
 
       case PermissionStatus.denied:

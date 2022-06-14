@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">21340619687-rig33ut3jo80jc05chrcogb4d4otv6ki.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">21340619687</string>
+    <string name="google_api_key" translatable="false">AIzaSyB70Z6_6Y5ltaxjZxnsE5edHb1c85mhduI</string>
+    <string name="google_app_id" translatable="false">1:21340619687:android:7e009eb9e282516209ac82</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyB70Z6_6Y5ltaxjZxnsE5edHb1c85mhduI</string>
+    <string name="google_storage_bucket" translatable="false">fseg-sousse.appspot.com</string>
+    <string name="project_id" translatable="false">fseg-sousse</string>
+</resources>

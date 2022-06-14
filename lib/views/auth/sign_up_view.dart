@@ -19,22 +19,20 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String? _confirmEmail;
   String? _email;
-  String? _userName;
   String? _password;
   String? _confirmPassword;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build sign Up screen *********************************");
     return Scaffold(
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w), //ODO:fix this
+            padding: EdgeInsets.symmetric(horizontal: 8.w), 
             child: ListView(
               children: [
                 SizedBox(
@@ -47,27 +45,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 50,
                 ),
                 AppTextForm(
-                  hintText: "Enter Your Full Name",
-                  lableText: "Full Name",
-                  prefixIcon: Icons.person_outline,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Enter your full name";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _userName = value;
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 8),
-                AppTextForm(
-                  hintText: "Enter Your Email Address",
-                  lableText: "Email",
+                  hintText: "Please Enter Your email address",
+                  lableText: "Email Address",
                   prefixIcon: Icons.email_outlined,
-                  validator: (value) =>
-                      ValidatorUtils.validateEmail(email: value!),
+                  validator: (value) =>ValidatorUtils.validateEmail(email: value!),
+                    
                   onSaved: (value) {
                     _email = value;
                     return null;
@@ -75,8 +57,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 8),
                 AppTextForm(
+                  hintText: " Please Enter Your Email Address",
+                  lableText: "Confirm Email",
+                  prefixIcon: Icons.email_outlined,
+                  validator: (value) =>
+                      ValidatorUtils.validateEmail(email: value!,confirmEmail: _email),
+                  onSaved: (value) {
+                    _confirmEmail = value;
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 8),
+                AppTextForm(
                   obscureText: true,
-                  hintText: "Enter Your Password",
+                  hintText: "Please Enter Your Password",
                   lableText: "Password",
                   prefixIcon: Icons.lock_outline,
                   validator: (value) =>
@@ -105,13 +99,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 AppButton(
                     textButton: "Sign Up",
                     onPressed: () {
+                      _formKey.currentState!.save();
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
                         if (_password == _confirmPassword) {
                           SignUpViewModel().signUpWithEmail(context,
                               email: _email!,
                               password: _password!,
-                              fullName: _userName!);
+                              );
                         }
                       }
                     }),

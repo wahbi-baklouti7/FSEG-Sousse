@@ -15,21 +15,21 @@ class GlobalData {
 
   static void setDegreeLevel(String? degreeLevel) {
     _degreeLevel = degreeLevel;
-    print("set degree level: $_degreeLevel");
+    print("degree level: $_degreeLevel");
   }
 
   static void setDegree(String? degree) {
     _degree = degree;
-    print("set degree: $_degree");
+    print("degree: $_degree");
   }
 
   static void setSection(String? section) {
     _section = section;
-    print("set section: $_section");
+    print("section: $_section");
   }
 
   static void setSubject(String? subject) {
     _subject = subject;
-    print("set section: $_section");
+    print("subject: $_subject");
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fseg_sousse/widgets/degree_list.dart';
-import 'package:fseg_sousse/widgets/selected_choic_card.dart';
+import 'package:fseg_sousse/widgets/selected_choice_card.dart';
 import 'package:fseg_sousse/widgets/tap_bar.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 import 'package:fseg_sousse/constants/app_size.dart';
@@ -20,8 +20,7 @@ class ExamsScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Padding(
-          padding:
-              AppSize.horizontalPadding, //EdgeInsets.symmetric(horizontal: 24),
+          padding: AppSize.horizontalPadding,
           child: Column(
             children: [
               const SizedBox(height: 10),
@@ -41,11 +40,11 @@ class ExamsScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              SelectedChoicCard(selectedChoiceIcon: selectedMenuChoice.icon),
+              SelectedChoiceCard(selectedChoiceIcon: selectedMenuChoice.icon),
               Expanded(
                 child: MyTabBar(tabTitle: const [
                   Tab(
-                    text: "Licenses",
+                    text: "Licences",
                   ),
                   Tab(
                     text: "Masters",

@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 import 'package:fseg_sousse/constants/app_images.dart';
 import 'package:fseg_sousse/constants/app_size.dart';
+import 'package:fseg_sousse/utilities/connectivity_utility.dart';
+import 'package:fseg_sousse/viewModel/file/add_file_view_model.dart';
 import 'package:fseg_sousse/widgets/app_drawer.dart';
 import 'package:fseg_sousse/widgets/empty_page.dart';
 import 'package:fseg_sousse/models/pdf_file.dart';
 import 'package:fseg_sousse/viewModel/file/file_view_model.dart';
 import 'package:fseg_sousse/views/files/add_file_view.dart';
 import 'package:fseg_sousse/views/files/widgets/file_local_widget.dart';
+import 'package:fseg_sousse/widgets/no_internet.dart';
 import 'package:provider/provider.dart';
 
 class FileScreen extends StatefulWidget {
@@ -23,45 +26,46 @@ class FileScreen extends StatefulWidget {
 class _FileScreenState extends State<FileScreen> {
   final scrollController = ScrollController();
   late FileViewModel fileViewModel;
+  late AddFileViewModel addFileViewModel;
 
   @override
   void initState() {
     super.initState();
 
     fileViewModel = Provider.of<FileViewModel>(context, listen: false);
+    fileViewModel.downloadListener();
 
-    fileViewModel.intit();
-    fileViewModel.getpdfFiles(context);
-    scrollController.addListener(scrollListner);
+    fileViewModel.init();
+    fileViewModel.getPdfFiles(context);
+
+    scrollController.addListener(scrollListener);
   }
 
-//========================================================================================
-
-  void scrollListner() {
+  void scrollListener() {
     if (scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent
-        /*  scrollController.offset == scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange
-        */
-        ) {
-      print("################## in scrollListner function #################");
-
+        scrollController.position.maxScrollExtent) {
       fileViewModel.loadMore(context);
     }
   }
 
   @override
+  void dispose() {
+    fileViewModel.cancelStream();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build file view *********************************");
     final viewModel = Provider.of<FileViewModel>(context, listen: false);
 
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(actions: [
         IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, AddFileScreen.id);
+            onPressed: () async {
+              if (await ConnectivityUtility.checkInternet(context)) {
+                Navigator.pushNamed(context, AddFileScreen.id);
+              }
             },
             icon: const Icon(
               Icons.add,
@@ -69,49 +73,38 @@ class _FileScreenState extends State<FileScreen> {
             ))
       ], title: const Text("Files")),
       drawer: const AppDrawer(),
-      body: Padding(
-        padding: AppSize.symetricPadding,
-        child: SafeArea(
-          child: Selector<FileViewModel, List<PdfFileModel>>(
-              selector: (_, file) => file.listOfPdfModel,
-              shouldRebuild: (previous, next) => true,
-              builder: (_, listOfPdfModel, __) {
-                print(
-                    "----------------------in selector get list of pdf---------------------");
-
-                if (viewModel.loadData) {
-                  return const SizedBox(
-                      child: Center(child: CircularProgressIndicator()));
-                } else {
-                  return SizedBox(
-                      child: FileList(
-                          listPdfFile:
-                              listOfPdfModel, // viewModel.listOfPdfModel,
-                          scrollContro: scrollController));
-                }
-
-                // viewModel.loadData== true
-                //     ? const SizedBox(
-                //         child:  Center(child: CircularProgressIndicator()))
-                //     :  SizedBox(
-                //         child: FileList(
-                //             listPdfFile:listOfPdfModel,// viewModel.listOfPdfModel,
-                //             scrollContro: scrollController));
-              }),
-
-//=================================================================================================================
+      body: NetworkSensitiveWidget(
+        child: Padding(
+          padding: AppSize.symmetricPadding,
+          child: SafeArea(
+            child: Selector<FileViewModel, List<PdfFileModel>>(
+                selector: (_, file) => file.listOfPdfModel,
+                shouldRebuild: (previous, next) => true,
+                builder: (_, listOfPdfModel, __) {
+                  if (viewModel.loadData) {
+                    return const SizedBox(
+                        child: Center(child: CircularProgressIndicator()));
+                  } else {
+                    return SizedBox(
+                        child: FileList(
+                            listPdfFile: listOfPdfModel,
+                            scrollContro: scrollController));
+                  }
+                }),
+          ),
         ),
       ),
     );
   }
 }
 
-/// build `File`
+// build file list
 class FileList extends StatefulWidget {
   List<PdfFileModel> listPdfFile;
   ScrollController scrollContro;
   FileList({Key? key, required this.listPdfFile, required this.scrollContro})
       : super(key: key);
+
   @override
   State<FileList> createState() => _FileListState();
 }
@@ -119,7 +112,6 @@ class FileList extends StatefulWidget {
 class _FileListState extends State<FileList> {
   @override
   Widget build(BuildContext context) {
-    print("################ build file list widget ################### ");
     return widget.listPdfFile.isEmpty
         ? const EmptyScreen(
             image: AppImages.noFile,
@@ -136,15 +128,24 @@ class _FileListState extends State<FileList> {
                   physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics()),
                   scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemExtent: 100,
                   itemCount: widget.listPdfFile.length + 1,
                   itemBuilder: (context, index) {
                     if (index < widget.listPdfFile.length) {
-                      print("####### in file card widget #######");
                       return FileCard(
-                        pdfFilemodel: widget.listPdfFile[index],
+                        onDownloadPressed: (() => downloadButton(
+                            fileName: widget.listPdfFile[index].name!,
+                            fileUrl: widget.listPdfFile[index].fileUrl!)),
+                        onPopUpMenuItem: (ff) {
+                          context.read<FileViewModel>().actionPopUpMenuItem(
+                              context,
+                              value: ff,
+                              pdfFileModel: widget.listPdfFile[index]);
+                        },
+                        pdfFileModel: widget.listPdfFile[index],
                       );
                     } else if (isLoading) {
-                      
                       return const Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 40),
                         child: Center(
@@ -166,5 +167,14 @@ class _FileListState extends State<FileList> {
               },
             ),
           );
+  }
+
+  Future<void> downloadButton(
+      {required String fileUrl, required String fileName}) async {
+    if (await ConnectivityUtility.checkInternet(context)) {
+      await context
+          .read<FileViewModel>()
+          .downloadPdfFile(context, url: fileUrl, fileName: fileName);
+    }
   }
 }

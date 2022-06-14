@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fseg_sousse/constants/app_size.dart';
 import 'package:fseg_sousse/widgets/degree_list.dart';
-import 'package:fseg_sousse/widgets/selected_choic_card.dart';
+import 'package:fseg_sousse/widgets/selected_choice_card.dart';
 import 'package:fseg_sousse/widgets/tap_bar.dart';
 import 'package:fseg_sousse/constants/app_colors.dart';
 import 'package:fseg_sousse/models/license.dart';
@@ -16,14 +16,11 @@ class LecturesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build lectures view *********************************");
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Padding(
-          padding: AppSize
-              .horizontalPadding /*EdgeInsets.symmetric(horizontal:6.w)*/,
+          padding: AppSize.horizontalPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -44,11 +41,11 @@ class LecturesScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              SelectedChoicCard(selectedChoiceIcon: selectedMenuChoice.icon),
+              SelectedChoiceCard(selectedChoiceIcon: selectedMenuChoice.icon),
               Expanded(
                 child: MyTabBar(tabTitle: const [
                   Tab(
-                    text: "Licenses",
+                    text: "Licences",
                   ),
                   Tab(
                     text: "Masters",

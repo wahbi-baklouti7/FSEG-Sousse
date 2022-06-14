@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fseg_sousse/models/user.dart';
@@ -7,10 +8,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 class FireAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
- /// A getter that returns the current user.
+  // Return the current user.
   User? get currentUser => _auth.currentUser;
 
-  /// send email verification to user
+  // send email verification to user
   Future<void> sendEmailVerification() async {
     try {
       User? _user = _auth.currentUser;
@@ -30,25 +31,24 @@ class FireAuth {
   Future<String?> signUpWithEmail(
       {required String email,
       required String password,
-      required String fullName}) async {
-    String? message;
+      // required String fullName
+      }) async {
+    String message = "Register failed. Please try again.";
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-
       if (userCredential.user != null) {
         message = "success";
-
-        DatabaseService().createUser(UserModel(
+        await DatabaseService().createUser(UserModel(
             uid: userCredential.user!.uid,
-            fullName: fullName,
+            fullName: userCredential.additionalUserInfo!.username,
             email: email,
             contribution: 0,
             accountCreated: Timestamp.now()));
       }
     } on FirebaseAuthException catch (error) {
       if (error.code == 'email-already-in-use') {
-        message = "The email address is already used";
+        message = "Email address is already exists ";
       }
     } catch (e) {
       message = e.toString();
@@ -56,31 +56,33 @@ class FireAuth {
     return message;
   }
 
-  // sing in method with email and password
   Future<String> signInWithEmail(
       {required String email, required String password}) async {
-    String message = "error";
+    String message = "Login failed. Please try again.";
     User? user;
 
     try {
       UserCredential? userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
+      
       user = userCredential.user;
 
       if (user != null) {
         // before sign in check if user email is verified or not
         if (user.emailVerified) {
           message = "success";
-        } else {
+          
+        } 
+         else {
           message = "Please Verify your address email";
         }
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        message = "No user found with this email";
+        message = " This email does not exist.";
       } else if (e.code == 'wrong-password') {
-        message = "Incorrect Password";
+        message = "Incorrect password.";
       }
     } catch (e) {
       message = e.toString();
@@ -89,10 +91,10 @@ class FireAuth {
     return message;
   }
 
-  // sign in method with google account
-  Future<String> signInWithGoogle() async {
-    String message = "error";
 
+  Future<String> signInWithGoogle() async {
+    String message = "Login failed. Please try again.";
+      // await GoogleSignIn().disconnect();
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     final GoogleSignInAuthentication? googleAuth =
@@ -107,9 +109,8 @@ class FireAuth {
       if (userCredential.user != null) {
         message = "success";
 
-        // check if user is new
-        // if ture
-        // store user data  in firestore
+        // check if user is new, if true
+        // store user data  in firestore database
         if (userCredential.additionalUserInfo!.isNewUser) {
           await DatabaseService().createUser(UserModel(
               uid: userCredential.user!.uid,
@@ -122,8 +123,6 @@ class FireAuth {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         message = 'Account already exist  with this email';
-      } else if (e.code == 'invalid-credential') {
-        message = "Error occurred while accessing credentials. Try again.";
       }
     } catch (e) {
       message = 'Error occurred using Google Sign-In. Try again.';
@@ -133,13 +132,15 @@ class FireAuth {
 
   /// reset password with address email link
   Future<String?> resetPassword({required String email}) async {
-    String? message;
+    String message = "Something went wrong.Please try again.";
     try {
       await _auth.sendPasswordResetEmail(email: email);
       message = "success";
     } on FirebaseAuthException catch (error) {
       if (error.code == "user-not-found") {
-        message = "There is no user corresponding to the email address";
+        message = "User with this email doesn't exist.";
+      } else if (error.code == "invalid-email") {
+        message = "the email address is not valid.";
       }
     } catch (error) {
       message = error.toString();

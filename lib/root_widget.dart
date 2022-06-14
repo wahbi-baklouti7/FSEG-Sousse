@@ -8,17 +8,7 @@ class RootWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
-    final isLogin = LocalStorage.getLogin;
-   
-  
-
-    print("in root widget: $isLogin");
-
- 
-    return isLogin
-        ? const HomeView()
-        : const SignInScreen();
+    final userId = LocalStorage.getUserId;
+    return userId != null ? const HomeView() : const SignInScreen();
   }
 }

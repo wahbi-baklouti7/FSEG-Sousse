@@ -10,8 +10,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build home screen *********************************");
+    print("home");
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
@@ -38,20 +37,19 @@ class HomeView extends StatelessWidget {
         drawer: const AppDrawer(),
         body: SafeArea(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.w), //ODO:fix this
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(
                 height: 5.h,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    10, 0, 0, 0), //const EdgeInsets.fromLTRB(10, 0, 8, 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcom to ",
+                        "Welcome to ",
                         style: Theme.of(context)
                             .textTheme
                             .headline3!

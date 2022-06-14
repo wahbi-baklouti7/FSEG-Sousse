@@ -18,17 +18,18 @@ class DatabaseService {
     }
   }
 
-  // add new subject
+  // add new subject to firestore database
   Future<String> addSubject(
       {String? subjectName, SubjectModel? subjectModel}) async {
     String message = "error";
     try {
-      await _firestoreHelper.subjectCollection
+      await _firestoreHelper.subjectCollection  
           .doc(subjectName)
           .set(subjectModel!.toJson());
       message = "success";
     } catch (e) {
-      print(e.toString());
+      print(
+           e.toString());
     }
     return message;
   }
@@ -46,6 +47,7 @@ class DatabaseService {
       list = _querySnapshot.docs
           .map((e) => SubjectModel.fromJson(e.data() as Map<String, dynamic>))
           .toList();
+
     } catch (e) {
       print(e.toString());
     }
@@ -102,7 +104,7 @@ class DatabaseService {
         userUid: model.userUid,
       ).toMap());
     } catch (e) {
-      print("this form add: ${e.toString()}");
+      print(e.toString());
     }
   }
 
@@ -132,7 +134,7 @@ class DatabaseService {
     return list;
   }
 
-  // delet file from database
+  // delete file from database
   Future<void> deleteFile({required String fileId}) async {
     DocumentReference _docRef = _firestoreHelper.sectionCollection.doc(fileId);
 

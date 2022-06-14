@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fseg_sousse/constants/app_images.dart';
+import 'package:fseg_sousse/constants/app_size.dart';
 import 'package:fseg_sousse/utilities/validator_utilities.dart';
 
 import 'package:fseg_sousse/viewModel/auth/sign_in_view_model.dart';
@@ -28,13 +28,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "**************************build sign in screen *********************************");
     final _signInViewModel =
         Provider.of<SignInViewModel>(context, listen: false);
     return Scaffold(
       body: Padding(
-        padding:EdgeInsets.symmetric(horizontal: 8.w),
+        padding: AppSize.horizontalPadding,
         child: SafeArea(
           child: Form(
             key: _formKey,
@@ -79,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Enter your password";
+                        return " Please enter your password";
                       }
                       return null;
                     },
@@ -144,33 +142,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 16,
                 ),
                 // google sing in button
-                OutlinedButton(
-                    style: ButtonStyle(
-                      
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(width: 10, color: Colors.red),
-                        )),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
-                    onPressed: () {
-                      _signInViewModel.signInWithGoogle(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox( height: 39, child: Image.asset(AppImages.googleLogo,cacheHeight: 120,cacheWidth: 120,)),
-                        // const Image(
-                        //   image: AssetImage(AppImages.googleLogo),
-                        //   height: 39,
-                        // ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Text("Sign In With Google",
-                            style: Theme.of(context).textTheme.bodyText1),
-                      ],
-                    ))
+                GoogleButton(
+                    onPressed: (() =>
+                        _signInViewModel.signInWithGoogle(context))),
               ],
             ),
           ),

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fseg_sousse/services/auth/authentication.dart';
-import 'package:fseg_sousse/views/auth/sign_in_view.dart';
+import 'package:fseg_sousse/services/localStorage/local_storage.dart';
 import 'package:fseg_sousse/locator.dart';
 import 'package:fseg_sousse/views/home/home_screen.dart';
 
@@ -23,6 +23,7 @@ class VerifyEmailViewModel extends ChangeNotifier {
     bool result = await _fireAuth.checkEmailVerified();
     _isEmailVerified = result;
     if (_isEmailVerified) {
+       LocalStorage.saveUserId( id: _fireAuth.currentUser!.uid);
       Navigator.pushReplacementNamed(context, HomeView.id);
     }
     notifyListeners();
